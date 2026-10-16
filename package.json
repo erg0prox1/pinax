@@ -1,0 +1,16 @@
+{
+  "name": "pinax",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Pinax, bitácora de campo. El package.json solo sirve para generar el APK de Android.",
+  "scripts": {
+    "web": "node build-web.mjs"
+  },
+  "dependencies": {
+    "@capacitor/android": "^8.5.3",
+    "@capacitor/core": "^8.5.3"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^8.5.3"
+  }
+}

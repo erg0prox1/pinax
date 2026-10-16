@@ -1,0 +1,24 @@
+{
+  "v": 3,
+  "createdOnFiles": { "v": 1, "at": "2026-10-10T08:10:00Z" },
+  "title": "Bitácora de Componentes",
+  "launch": { "view": "canvas" },
+  "pages": [],
+  "boards": {
+    "Main.dc.html": { "x": 0, "y": 0, "w": 390, "h": 844, "title": "1 · Menú principal", "is_interactive": true },
+    "Sitios.dc.html": { "x": 470, "y": 0, "w": 390, "h": 844, "title": "2 · Sitios", "is_interactive": true },
+    "Sistemas.dc.html": { "x": 940, "y": 0, "w": 390, "h": 844, "title": "3 · Sistemas", "is_interactive": true },
+    "Componentes.dc.html": { "x": 1410, "y": 0, "w": 390, "h": 844, "title": "4 · Componentes", "is_interactive": true },
+    "Ficha.dc.html": { "x": 1880, "y": 0, "w": 390, "h": 844, "title": "5 · Ficha de captura", "is_interactive": true }
+  },
+  "order": ["Main.dc.html", "Sitios.dc.html", "Sistemas.dc.html", "Componentes.dc.html", "Ficha.dc.html"],
+  "notes": {
+    "titulo": { "x": 0, "y": -300, "text": "Bitácora de componentes: Sitio → Sistema → Componente", "kind": "title1", "maxW": 2270 },
+    "n1": { "x": 0, "y": 924, "w": 390, "size": "s", "fill": "gray", "text": "Mediciones queda para la segunda etapa. El menú ya la contempla." },
+    "n2": { "x": 470, "y": 924, "w": 390, "size": "s", "fill": "gray", "text": "Lista de sitios más «Agregar sitio». Hoy: Miguel Alemán y Camargo." },
+    "n3": { "x": 940, "y": 924, "w": 390, "size": "s", "fill": "gray", "text": "Un sistema es solo un ID (ej. P60). Se captura en una línea." },
+    "n4": { "x": 1410, "y": 924, "w": 390, "size": "s", "fill": "gray", "text": "Propuesta: cada componente lleva un nombre corto (ej. T1) para distinguirlo en la lista. El tipo sale del combo de la ficha." },
+    "n5": { "x": 1880, "y": 924, "w": 390, "size": "s", "fill": "gray", "text": "Guardar no cierra la ficha. Propuestas: aviso «Guardado», botón Atrás siempre visible y borrador automático por si la app se cierra." }
+  },
+  "designSystems": []
+}
