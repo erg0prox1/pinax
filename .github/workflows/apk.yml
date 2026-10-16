@@ -1,0 +1,68 @@
+# Genera el APK de Pinax en los servidores de GitHub (ahí ya está Android instalado).
+# Se ejecuta a mano: pestaña Actions → "Generar APK" → Run workflow.
+name: Generar APK
+
+on:
+  workflow_dispatch:
+
+jobs:
+  apk:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # La app puede estar en la raíz del repo o en /docs, según lo que usas en Pages.
+      - name: Buscar la carpeta de la app
+        id: dir
+        run: |
+          if [ -f index.html ] && [ -f capacitor.config.json ]; then echo "path=." >> "$GITHUB_OUTPUT";
+          elif [ -f docs/index.html ] && [ -f docs/capacitor.config.json ]; then echo "path=docs" >> "$GITHUB_OUTPUT";
+          else echo "No encontré capacitor.config.json junto a index.html (ni en la raíz ni en docs/)"; exit 1; fi
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Instalar dependencias
+        working-directory: ${{ steps.dir.outputs.path }}
+        run: npm install
+
+      - name: Preparar la app web
+        working-directory: ${{ steps.dir.outputs.path }}
+        run: npm run web
+
+      - name: Crear el proyecto Android
+        working-directory: ${{ steps.dir.outputs.path }}
+        run: |
+          npx cap add android
+          # Permiso para que el botón "Tomar foto" pueda abrir la cámara
+          sed -i 's#<application#<uses-permission android:name="android.permission.CAMERA" />\n    <application#' android/app/src/main/AndroidManifest.xml
+          npx cap sync android
+
+      # Firma fija (opcional): si guardaste el secreto DEBUG_KEYSTORE_B64, cada APK sale firmado
+      # con la misma llave y se puede instalar encima del anterior sin perder datos.
+      - name: Usar la llave de firma fija
+        env:
+          KS: ${{ secrets.DEBUG_KEYSTORE_B64 }}
+        run: |
+          if [ -n "$KS" ]; then
+            mkdir -p ~/.android
+            echo "$KS" | base64 -d > ~/.android/debug.keystore
+            echo "Llave fija en uso."
+          else
+            echo "::warning::Sin DEBUG_KEYSTORE_B64: este APK usa una llave nueva y no se podrá instalar encima de uno anterior."
+          fi
+
+      - name: Compilar el APK
+        working-directory: ${{ steps.dir.outputs.path }}/android
+        run: ./gradlew assembleDebug
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pinax-apk
+          path: ${{ steps.dir.outputs.path }}/android/app/build/outputs/apk/debug/app-debug.apk
